@@ -1,0 +1,27 @@
+<div id='post_content'>
+    <h1 class='title'><%= @post.title %></h1>
+
+    <p class='date'>
+        Subido <%= time_ago_in_words(@post.created_at) %>
+        <% if user_signed_in? %>
+            | <%= link_to "Editar", edit_post_path(@post) %> |
+            <%= link_to "Eliminar", post_path(@post), method: :delete, data: { confirm: "¿Estas seguro?" } %>
+        <% end %>
+    </p>
+
+    <p class='body'><%= @post.body %></p>
+
+    <div id='comments'>
+        <% if @post.comments.count < 1 || @post.comments.count > 1 %>
+            <h2><%= @post.comments.count %> comentarios</h2>
+        <% else %>
+            <h2><%= @post.comments.count %> comentario</h2>
+        <% end %>
+
+        <%= render @post.comments %>
+
+        <h3>Únete a la conversación: </h3>
+
+        <%= render 'comments/form' %>
+    </div>
+</div>

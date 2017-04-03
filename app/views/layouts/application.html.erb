@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Tumblrr</title>
+    <%= csrf_meta_tags %>
+
+    <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= stylesheet_link_tag    'application', 'http://fonts.googleapis.com/css?family=Raleway:400,700' %>
+    <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+    <%= favicon_link_tag       'favicon.ico' %>
+  </head>
+
+  <body>
+    <div id='sidebar'>
+      <ul>
+        <li class='category'><%= link_to "Tumblrr", root_path %></li>
+        <li><%= link_to "Publicaciones", root_path %></li>
+        <li><%= link_to "Acerca de", about_path %></li>
+      </ul>
+
+      <% if !user_signed_in? %>
+        <p class='sign_in'><%= link_to "Ingresar", new_user_session_path %></p>
+      <% end %>
+    </div>
+
+    <div id='main_content'>
+      <div id='header'>
+        <% if current_page?(root_path) %>
+          <p>Feed de publicaciones</p>
+        <% elsif current_page?(about_path) %>
+          <p>Mi sitio</p>
+        <% else %>
+          <%= link_to "Regresar al feed de publicaciones", root_path %>
+        <% end %>
+        <% if user_signed_in? %>
+          <div class='buttons'>
+            <button class='button'><%= link_to "Hacer publicación", new_post_path %></button>
+            <button class='button'><%= link_to "Salir", destroy_user_session_path, method: :delete %></button>
+          </div>
+        <% end %>
+      </div>
+
+      <% flash.each do |name, msg| %>
+      <%= content_tag(:div, msg, class: 'alert') %>
+      <% end %>
+
+      <%= yield %>
+    </div>
+  </body>
+</html>
